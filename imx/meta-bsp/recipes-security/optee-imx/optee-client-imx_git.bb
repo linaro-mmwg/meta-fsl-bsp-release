@@ -18,6 +18,8 @@ SRC_URI_append = " file://tee-supplicant.service"
 S = "${WORKDIR}/git"
 SYSTEMD_SERVICE_${PN} = "tee-supplicant.service"
 
+EXTRA_OEMAKE = "CFG_SECURE_DATA_PATH=y"
+
 do_compile () {
     if [ ${DEFAULTTUNE} = "aarch64" ]; then
         oe_runmake -C ${S} ARCH=arm64
