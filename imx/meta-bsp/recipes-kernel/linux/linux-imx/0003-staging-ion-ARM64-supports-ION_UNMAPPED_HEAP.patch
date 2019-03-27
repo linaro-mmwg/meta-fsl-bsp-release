@@ -1,0 +1,27 @@
+From 253d02fd2f5d09e4bd1067d72e8bd4027af72613 Mon Sep 17 00:00:00 2001
+From: Etienne Carriere <etienne.carriere@linaro.org>
+Date: Thu, 14 Sep 2017 17:52:51 +0200
+Subject: [PATCH 03/13] staging/ion: ARM64 supports ION_UNMAPPED_HEAP
+
+Change-Id: Id54f7d5aee14d43778ab2283504695e7fbc07416
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+---
+ drivers/staging/android/ion/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/android/ion/Kconfig b/drivers/staging/android/ion/Kconfig
+index 8ad9407..f1fbe6d 100644
+--- a/drivers/staging/android/ion/Kconfig
++++ b/drivers/staging/android/ion/Kconfig
+@@ -45,7 +45,7 @@ config ION_CMA_HEAP
+ 
+ config ION_UNMAPPED_HEAP
+ 	bool "ION unmapped heap support"
+-	depends on ION
++	depends on ION && (ARM || ARM64)
+ 	help
+ 	  Choose this option to enable UNMAPPED heaps with Ion. This heap is
+ 	  backed in specific memory pools, carveout from the Linux memory.
+-- 
+2.7.4
+

@@ -1,0 +1,149 @@
+From c360fc841bcaab3da66c4b457309c6b56d9e878d Mon Sep 17 00:00:00 2001
+From: Olivier Masse <olivier.masse@nxp.com>
+Date: Thu, 20 Sep 2018 15:32:42 +0200
+Subject: [PATCH 08/13] MMIOT-157: Ion: support multiple unmapped ion heap
+
+Change-Id: I268fd5d2bf039699ecdcab752146bc191209f046
+Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
+---
+ .../boot/dts/freescale/fsl-imx8mq-evk-drm.dts      | 18 +++++----
+ drivers/staging/android/ion/ion_unmapped_heap.c    | 47 ++++++++++++++--------
+ 2 files changed, 42 insertions(+), 23 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
+index bd2274c..6043157 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
+@@ -15,12 +15,16 @@
+ #include "fsl-imx8mq-evk.dts"
+ 
+ &resmem {
+-	display_region: imx_ion@1 {
+-		compatible = "imx-ion-pool";
++	carveout_region: imx_ion@0 {
++		status = "disabled";
++	};
++
++	display_region: display {
++		compatible = "imx-secure-ion-pool";
+ 		reg = <0x0 0xce000000 0 0x30000000>;
+ 	};
+ 
+-	vpu_region: imx_ion@2 {
++	optee_region: optee {
+ 		compatible = "imx-secure-ion-pool";
+ 		reg = <0x0 0xcc000000 0 0x02000000>;
+ 	};
+@@ -30,12 +34,12 @@
+ 	compatible = "fsl,mxc-ion", "linux,ion";
+ 
+ 	ion-display-region {
+-		compatible = "fsl,display-heap", "linux,ion-heap-carveout";
++		compatible = "fsl,display-heap", "linux,ion-heap-unmapped";
+ 		memory-region = <&display_region>;
+ 	};
+ 
+-	ion-vpu-region {
+-		compatible = "fsl,vpu-heap", "linux,ion-heap-unmapped";
+-		memory-region = <&vpu_region>;
++	ion-optee-region {
++		compatible = "fsl,optee-heap", "linux,ion-heap-unmapped";
++		memory-region = <&optee_region>;
+ 	};
+ };
+diff --git a/drivers/staging/android/ion/ion_unmapped_heap.c b/drivers/staging/android/ion/ion_unmapped_heap.c
+index cd437140..a86257f 100644
+--- a/drivers/staging/android/ion/ion_unmapped_heap.c
++++ b/drivers/staging/android/ion/ion_unmapped_heap.c
+@@ -44,11 +44,16 @@
+ #include <linux/vmalloc.h>
+ #include "ion.h"
+ 
++#define MAX_UNMAPPED_AREA 2
++
+ struct rmem_unmapped {
+ 	phys_addr_t base;
+ 	phys_addr_t size;
++
++	char name[32];
+ };
+-static struct rmem_unmapped unmapped_data;
++static struct rmem_unmapped unmapped_data[MAX_UNMAPPED_AREA] = {0};
++uint32_t unmapped_count = 0;
+ 
+ struct ion_unmapped_heap {
+ 	struct ion_heap heap;
+@@ -154,7 +159,6 @@ static int ion_unmapped_heap_allocate(struct ion_heap *heap,
+ 		rc = -ENOMEM;
+ 		goto err;
+ 	}
+-	pr_info("%s buffer %p size %d table 0x%08X sgl 0x%08X\n",__func__,buffer,size,buffer->sg_table,buffer->sg_table->sgl);
+ 
+ 	sg_dma_address(buffer->sg_table->sgl) = priv->base;
+ 	sg_dma_len(buffer->sg_table->sgl) = size;
+@@ -261,6 +265,7 @@ struct ion_heap *ion_unmapped_heap_create(struct rmem_unmapped *heap_data)
+ 	unmapped_heap->heap.ops = &unmapped_heap_ops;
+ 	unmapped_heap->heap.type = ION_HEAP_TYPE_UNMAPPED;
+ 	unmapped_heap->heap.flags = ION_HEAP_FLAG_DEFER_FREE;
++	unmapped_heap->heap.name = heap_data->name;
+ 
+ 	return &unmapped_heap->heap;
+ }
+@@ -268,17 +273,19 @@ struct ion_heap *ion_unmapped_heap_create(struct rmem_unmapped *heap_data)
+ static int ion_add_unmapped_heap(void)
+ {
+ 	struct ion_heap *heap;
++	uint32_t i;
+ 
+-	if (unmapped_data.base == 0 || unmapped_data.size == 0)
+-		return -EINVAL;
+-
+-	heap = ion_unmapped_heap_create(&unmapped_data);
+-	if (IS_ERR(heap))
+-		return PTR_ERR(heap);
++	for (i=0;i<unmapped_count;i++)
++	{
++		if (unmapped_data[i].base == 0 || unmapped_data[i].size == 0)
++			return -EINVAL;
+ 
+-	heap->name = "unmapped";
++		heap = ion_unmapped_heap_create(&unmapped_data[i]);
++		if (IS_ERR(heap))
++			return PTR_ERR(heap);
+ 
+-	ion_device_add_heap(heap);
++		ion_device_add_heap(heap);
++	}
+ 	return 0;
+ }
+ 
+@@ -312,12 +319,20 @@ static const struct reserved_mem_ops rmem_dma_ops = {
+ 
+ static int __init rmem_unmapped_setup(struct reserved_mem *rmem)
+ {
+-	unmapped_data.base = rmem->base;
+-	unmapped_data.size = rmem->size;
+-	rmem->ops = &rmem_dma_ops;
+-	pr_info("Reserved memory: ION unmapped pool at %pa, size %ld MiB\n",
+-			&rmem->base, (unsigned long)rmem->size / SZ_1M);
+-	return 0;
++	if (unmapped_count < MAX_UNMAPPED_AREA)
++	{
++		unmapped_data[unmapped_count].base = rmem->base;
++		unmapped_data[unmapped_count].size = rmem->size;
++		memcpy(unmapped_data[unmapped_count].name,rmem->name,32);
++		rmem->ops = &rmem_dma_ops;
++		pr_info("Reserved memory: ION unmapped pool %s at %pa, size %ld MiB\n",
++				rmem->name,&rmem->base, (unsigned long)rmem->size / SZ_1M);
++
++		unmapped_count++;
++		return 0;
++	} else {
++		return -EINVAL;
++	}
+ }
+ 
+ RESERVEDMEM_OF_DECLARE(unmapped, "imx-secure-ion-pool", rmem_unmapped_setup);
+-- 
+2.7.4
+

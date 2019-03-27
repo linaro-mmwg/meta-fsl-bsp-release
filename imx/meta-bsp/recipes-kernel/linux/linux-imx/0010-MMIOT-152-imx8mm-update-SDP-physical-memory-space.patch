@@ -1,0 +1,33 @@
+From 316ad64d7b5134dc11212ac39079348564c3f6f2 Mon Sep 17 00:00:00 2001
+From: Olivier Masse <olivier.masse@nxp.com>
+Date: Wed, 26 Sep 2018 18:09:17 +0200
+Subject: [PATCH 10/13] MMIOT-152: imx8mm: update SDP physical memory space
+
+Change-Id: I410909ce69f79846c8956c185570af2e933c829a
+Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+index b3b84ec..8a7ece7 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+@@ -17,12 +17,12 @@
+ &resmem {
+ 	display_region: display {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0xce000000 0 0x30000000>;
++		reg = <0x0 0x8e000000 0 0x30000000>;
+ 	};
+ 
+ 	optee_region: optee {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0xcc000000 0 0x02000000>;
++		reg = <0x0 0x8c000000 0 0x02000000>;
+ 	};
+ };
+ 
+-- 
+2.7.4
+

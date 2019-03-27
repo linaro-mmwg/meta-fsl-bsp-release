@@ -1,0 +1,33 @@
+From 0839ad02bdac78d506e89fcbf81b256ff37fb56d Mon Sep 17 00:00:00 2001
+From: Olivier Masse <olivier.masse@nxp.com>
+Date: Tue, 22 Jan 2019 17:19:14 +0100
+Subject: [PATCH 13/13] MMIOT-152 Update Secure Data Path physical address
+
+Change-Id: I5837a5d54e2e27503b532b811d477f1d142b2b99
+Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+index 01c6ddf..3fe9bf2 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+@@ -17,12 +17,12 @@
+ &resmem {
+ 	display_region: display {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0xB0000000 0 0x08000000>;
++		reg = <0x0 0xB8400000 0 0x05C00000>;
+ 	};
+ 
+ 	optee_region: optee {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0xAE000000 0 0x02000000>;
++		reg = <0x0 0xB6000000 0 0x02000000>;
+ 	};
+ };
+ 
+-- 
+2.7.4
+

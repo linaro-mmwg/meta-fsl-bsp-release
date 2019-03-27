@@ -1,0 +1,33 @@
+From 92ba8449491ab9fdd7037cc17bb5ff0adc063377 Mon Sep 17 00:00:00 2001
+From: Olivier Masse <olivier.masse@nxp.com>
+Date: Thu, 27 Sep 2018 15:11:12 +0200
+Subject: [PATCH 11/13] MMIOT-152: imx8mm RDC configuration update
+
+Change-Id: I8fb3b2515b6fa02cbb7c6849fd0661e4f3f66ee7
+Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+index 8a7ece7..01c6ddf 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mm-evk-drm.dts
+@@ -17,12 +17,12 @@
+ &resmem {
+ 	display_region: display {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0x8e000000 0 0x30000000>;
++		reg = <0x0 0xB0000000 0 0x08000000>;
+ 	};
+ 
+ 	optee_region: optee {
+ 		compatible = "imx-secure-ion-pool";
+-		reg = <0x0 0x8c000000 0 0x02000000>;
++		reg = <0x0 0xAE000000 0 0x02000000>;
+ 	};
+ };
+ 
+-- 
+2.7.4
+

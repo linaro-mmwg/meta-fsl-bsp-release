@@ -1,0 +1,69 @@
+From 7f30a0b914eb3fa4f392e5d8dfb5d87f13588107 Mon Sep 17 00:00:00 2001
+From: Jerome Forissier <jerome.forissier@linaro.org>
+Date: Fri, 31 Aug 2018 11:53:16 +0100
+Subject: [PATCH 05/13] staging: android: ion: do not clear dma_address of
+ unmapped heap
+
+Since commit 54ef5b9db767 (staging: android: ion: Initialize dma_address
+of new sg list") (Linux v4.17), the helper function dup_sg_table() called
+by ion_dma_buf_attach() does not preserve the dma_address from the
+original SG list. It is a problem for the unmapped heap, because
+dma_buf_attach() followed by dma_buf_map_attachment() now returns a SG
+table with NULL dma_address, which breaks tee_shm_register_fd().
+
+This commit avoids the dma_address reset for the unmapped heap.
+
+Change-Id: I50cf4649d36b610be78fb0e7c16b792833854156
+Signed-off-by: Jerome Forissier <jerome.forissier@linaro.org>
+---
+ drivers/staging/android/ion/ion.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
+index bebfcbe..ed55d6e 100644
+--- a/drivers/staging/android/ion/ion.c
++++ b/drivers/staging/android/ion/ion.c
+@@ -183,7 +183,8 @@ static void ion_buffer_kmap_put(struct ion_buffer *buffer)
+ 	}
+ }
+ 
+-static struct sg_table *dup_sg_table(struct sg_table *table)
++static struct sg_table *dup_sg_table(struct sg_table *table,
++				     bool preserve_dma_address)
+ {
+ 	struct sg_table *new_table;
+ 	int ret, i;
+@@ -202,7 +203,9 @@ static struct sg_table *dup_sg_table(struct sg_table *table)
+ 	new_sg = new_table->sgl;
+ 	for_each_sg(table->sgl, sg, table->nents, i) {
+ 		memcpy(new_sg, sg, sizeof(*sg));
+-		sg->dma_address = 0;
++		if (!preserve_dma_address)
++			new_sg->dma_address = 0;
++
+ 		new_sg = sg_next(new_sg);
+ 	}
+ 
+@@ -233,15 +236,15 @@ static int ion_dma_buf_attach(struct dma_buf *dmabuf, struct device *dev,
+ 	if (!a)
+ 		return -ENOMEM;
+ 
+-	table = dup_sg_table(buffer->sg_table);
++	if (buffer->heap->type == ION_HEAP_TYPE_UNMAPPED)
++		a->no_map = true;
++
++	table = dup_sg_table(buffer->sg_table, a->no_map);
+ 	if (IS_ERR(table)) {
+ 		kfree(a);
+ 		return -ENOMEM;
+ 	}
+ 
+-	if (buffer->heap->type == ION_HEAP_TYPE_UNMAPPED)
+-		a->no_map = true;
+-
+ 	a->table = table;
+ 	a->dev = dev;
+ 	INIT_LIST_HEAD(&a->list);
+-- 
+2.7.4
+

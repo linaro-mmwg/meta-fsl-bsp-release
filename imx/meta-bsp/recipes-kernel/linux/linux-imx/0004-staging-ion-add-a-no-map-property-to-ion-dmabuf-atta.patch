@@ -1,0 +1,67 @@
+From 5e5db582458a09334f7bbf8592ba01570904f5d0 Mon Sep 17 00:00:00 2001
+From: Etienne Carriere <etienne.carriere@linaro.org>
+Date: Mon, 9 Oct 2017 13:47:40 +0200
+Subject: [PATCH 04/13] staging:ion: add a no-map property to ion dmabuf
+ attachment
+
+Ion unmapped heap aims at not being mapped. This change prevents
+Ion from calling dma-mapping support on dma_buf_attach for buffers
+in an unmapped heap.
+
+This change is a bit intrusive in the Ion driver. Maybe there is
+another way to deal with the dma-mapping resources used for the
+unmapped heap.
+
+Change-Id: I55f5ef94e88a262288165c9ae618fdb9396f3ad0
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+---
+ drivers/staging/android/ion/ion.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
+index 24cb666..bebfcbe 100644
+--- a/drivers/staging/android/ion/ion.c
++++ b/drivers/staging/android/ion/ion.c
+@@ -219,6 +219,7 @@ struct ion_dma_buf_attachment {
+ 	struct device *dev;
+ 	struct sg_table *table;
+ 	struct list_head list;
++	bool no_map;
+ };
+ 
+ static int ion_dma_buf_attach(struct dma_buf *dmabuf, struct device *dev,
+@@ -238,6 +239,9 @@ static int ion_dma_buf_attach(struct dma_buf *dmabuf, struct device *dev,
+ 		return -ENOMEM;
+ 	}
+ 
++	if (buffer->heap->type == ION_HEAP_TYPE_UNMAPPED)
++		a->no_map = true;
++
+ 	a->table = table;
+ 	a->dev = dev;
+ 	INIT_LIST_HEAD(&a->list);
+@@ -273,6 +277,9 @@ static struct sg_table *ion_map_dma_buf(struct dma_buf_attachment *attachment,
+ 
+ 	table = a->table;
+ 
++	if (a->no_map)
++		return table;
++
+ 	if (!dma_map_sg(attachment->dev, table->sgl, table->nents,
+ 			direction))
+ 		return ERR_PTR(-ENOMEM);
+@@ -284,6 +291,11 @@ static void ion_unmap_dma_buf(struct dma_buf_attachment *attachment,
+ 			      struct sg_table *table,
+ 			      enum dma_data_direction direction)
+ {
++	struct ion_dma_buf_attachment *a = attachment->priv;
++
++	if (a->no_map)
++		return;
++
+ 	dma_unmap_sg(attachment->dev, table->sgl, table->nents, direction);
+ }
+ 
+-- 
+2.7.4
+
