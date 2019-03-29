@@ -1,0 +1,72 @@
+From 89f895c23d603630d7b3833fa620b8119f81cb74 Mon Sep 17 00:00:00 2001
+From: "ivan.liu" <xiaowen.liu@nxp.com>
+Date: Fri, 29 Mar 2019 11:00:43 -0400
+Subject: [PATCH 02/19] MA-12602-2 Add ION carveout heap support on 4.14
+ kernel.
+
+Add imx-ion-pool reserved memory to imx8mq/qxp.
+
+Change-Id: Id20b6a6c7d1d425ccc6f121ca89a726ba8a5b068
+Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts |  4 ++++
+ arch/arm64/boot/dts/freescale/fsl-imx8mq-evk.dts     |  8 ++++++++
+ arch/arm64/boot/dts/freescale/fsl-imx8qxp-mek.dts    | 14 ++++++++++++++
+ 3 files changed, 26 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
+index a695afb..2144f10 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
+@@ -15,6 +15,10 @@
+ #include "fsl-imx8mq-evk.dts"
+ 
+ &resmem {
++	carveout_region: imx_ion@0 {
++		status = "disabled";
++	};
++
+ 	display_region: imx_ion@1 {
+ 		compatible = "imx-ion-pool";
+ 		reg = <0x0 0xe6000000 0 0x18000000>;
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk.dts
+index a9d93cb..47e0609 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk.dts
+@@ -992,3 +992,11 @@
+ 		};
+ 	};
+ };
++
++&resmem {
++	carveout_region: imx_ion@0 {
++		compatible = "imx-ion-pool";
++		reg = <0x0 0xf8000000 0 0x8000000>;
++	};
++};
++
+diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8qxp-mek.dts b/arch/arm64/boot/dts/freescale/fsl-imx8qxp-mek.dts
+index 3e71732..c50d516 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-imx8qxp-mek.dts
++++ b/arch/arm64/boot/dts/freescale/fsl-imx8qxp-mek.dts
+@@ -15,3 +15,17 @@
+ /dts-v1/;
+ 
+ #include "fsl-imx8qxp-mek.dtsi"
++
++/ {
++    reserved-memory {
++	    #address-cells = <2>;
++	    #size-cells = <2>;
++	    ranges;
++
++	    carveout_region: imx_ion@0 {
++		    compatible = "imx-ion-pool";
++		    reg = <0x0 0xf8000000 0 0x8000000>;
++	    };
++    };
++};
++
+-- 
+2.7.4
+

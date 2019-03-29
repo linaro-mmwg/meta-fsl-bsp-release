@@ -1,29 +1,25 @@
-From c360fc841bcaab3da66c4b457309c6b56d9e878d Mon Sep 17 00:00:00 2001
+From 2feb17013b5e8777fef8348c60e385f6c0ffeba6 Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Thu, 20 Sep 2018 15:32:42 +0200
-Subject: [PATCH 08/13] MMIOT-157: Ion: support multiple unmapped ion heap
+Subject: [PATCH 13/19] MMIOT-157: Ion: support multiple unmapped ion heap
 
 Change-Id: I268fd5d2bf039699ecdcab752146bc191209f046
 Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
 ---
- .../boot/dts/freescale/fsl-imx8mq-evk-drm.dts      | 18 +++++----
+ .../boot/dts/freescale/fsl-imx8mq-evk-drm.dts      | 14 +++----
  drivers/staging/android/ion/ion_unmapped_heap.c    | 47 ++++++++++++++--------
- 2 files changed, 42 insertions(+), 23 deletions(-)
+ 2 files changed, 38 insertions(+), 23 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
-index bd2274c..6043157 100644
+index 16e839b..6043157 100644
 --- a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
 +++ b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
-@@ -15,12 +15,16 @@
- #include "fsl-imx8mq-evk.dts"
+@@ -19,12 +19,12 @@
+ 		status = "disabled";
+ 	};
  
- &resmem {
 -	display_region: imx_ion@1 {
 -		compatible = "imx-ion-pool";
-+	carveout_region: imx_ion@0 {
-+		status = "disabled";
-+	};
-+
 +	display_region: display {
 +		compatible = "imx-secure-ion-pool";
  		reg = <0x0 0xce000000 0 0x30000000>;
@@ -34,7 +30,7 @@ index bd2274c..6043157 100644
  		compatible = "imx-secure-ion-pool";
  		reg = <0x0 0xcc000000 0 0x02000000>;
  	};
-@@ -30,12 +34,12 @@
+@@ -34,12 +34,12 @@
  	compatible = "fsl,mxc-ion", "linux,ion";
  
  	ion-display-region {

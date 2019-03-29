@@ -1,7 +1,7 @@
-From 934ba78d616a10a0eddcd3622691502cec72059f Mon Sep 17 00:00:00 2001
+From 12b072e7f49b5267d4cf0a3711915c4a629d90a2 Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Mon, 21 Jan 2019 11:45:53 +0100
-Subject: [PATCH 12/13] MMIOT-30 MA-13967-1 Add secure_ion.h
+Subject: [PATCH 17/19] MMIOT-30 MA-13967-1 Add secure_ion.h
 
 secure_ion.h added in drivers includes to expose it in user space
 

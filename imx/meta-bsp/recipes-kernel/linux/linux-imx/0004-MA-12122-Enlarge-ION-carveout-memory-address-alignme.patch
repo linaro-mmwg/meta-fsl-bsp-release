@@ -1,0 +1,31 @@
+From 922bf76934fcf287a14c07c75832a43da4f212d0 Mon Sep 17 00:00:00 2001
+From: "ivan.liu" <xiaowen.liu@nxp.com>
+Date: Tue, 3 Jul 2018 17:16:08 +0800
+Subject: [PATCH 04/19] MA-12122 Enlarge ION carveout memory address alignment
+ to 64K.
+
+Enlarge pool minimal allocation alignment to 64K for ION carveout heap.
+
+Change-Id: I6d92b32c7744f788b1da12ab49a1e8191c7436bb
+Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
+---
+ drivers/staging/android/ion/ion_carveout_heap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/staging/android/ion/ion_carveout_heap.c b/drivers/staging/android/ion/ion_carveout_heap.c
+index 56d8512..ae9f7ee 100644
+--- a/drivers/staging/android/ion/ion_carveout_heap.c
++++ b/drivers/staging/android/ion/ion_carveout_heap.c
+@@ -140,7 +140,8 @@ struct ion_heap *ion_carveout_heap_create(struct rmem_carveout *heap_data)
+ 	if (!carveout_heap)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	carveout_heap->pool = gen_pool_create(PAGE_SHIFT, -1);
++	// ensure memory address align to 64K which can meet VPU requirement.
++	carveout_heap->pool = gen_pool_create(PAGE_SHIFT+4, -1);
+ 	if (!carveout_heap->pool) {
+ 		kfree(carveout_heap);
+ 		return ERR_PTR(-ENOMEM);
+-- 
+2.7.4
+

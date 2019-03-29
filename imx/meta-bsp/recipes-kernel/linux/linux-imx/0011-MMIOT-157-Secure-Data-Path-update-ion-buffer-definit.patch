@@ -1,7 +1,7 @@
-From aa695c080e9d6c7261abc8a1ce0fc79d9d15b2cf Mon Sep 17 00:00:00 2001
+From 74b8cbb65c0366ba2783ac2650aedfae6d97b05c Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Tue, 18 Sep 2018 16:04:58 +0200
-Subject: [PATCH 06/13] MMIOT-157: Secure Data Path: update ion buffer
+Subject: [PATCH 11/19] MMIOT-157: Secure Data Path: update ion buffer
  definition
 
 Change-Id: I55f88e103a987bc8adaf2634026031d1fbc1e0b9
@@ -11,11 +11,11 @@ Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
-index a695afb..bd2274c 100644
+index 2144f10..16e839b 100644
 --- a/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
 +++ b/arch/arm64/boot/dts/freescale/fsl-imx8mq-evk-drm.dts
-@@ -17,12 +17,12 @@
- &resmem {
+@@ -21,12 +21,12 @@
+ 
  	display_region: imx_ion@1 {
  		compatible = "imx-ion-pool";
 -		reg = <0x0 0xe6000000 0 0x18000000>;
@@ -30,7 +30,7 @@ index a695afb..bd2274c 100644
  	};
  };
  
-@@ -30,7 +30,7 @@
+@@ -34,7 +34,7 @@
  	compatible = "fsl,mxc-ion", "linux,ion";
  
  	ion-display-region {

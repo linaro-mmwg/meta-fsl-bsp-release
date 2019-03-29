@@ -1,0 +1,103 @@
+From 34bba5a128ee861690b50a48591c59d4c4cb6d85 Mon Sep 17 00:00:00 2001
+From: "ivan.liu" <xiaowen.liu@nxp.com>
+Date: Thu, 30 Aug 2018 14:09:38 +0800
+Subject: [PATCH 01/19] MA-12602 Add ION carveout heap support on 4.14 kernel.
+
+Declare imx-ion-pool reserved memory.
+Setup ION carveout heap with this reserved memory.
+
+Change-Id: I876bf344c5525e4b6567cc4b67997b6d305dcb71
+Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
+---
+ drivers/staging/android/ion/ion_carveout_heap.c | 60 ++++++++++++++++++++++++-
+ 1 file changed, 59 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/staging/android/ion/ion_carveout_heap.c b/drivers/staging/android/ion/ion_carveout_heap.c
+index fee7650..56d8512 100644
+--- a/drivers/staging/android/ion/ion_carveout_heap.c
++++ b/drivers/staging/android/ion/ion_carveout_heap.c
+@@ -22,10 +22,19 @@
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/vmalloc.h>
++#include <linux/of.h>
++#include <linux/of_fdt.h>
++#include <linux/of_reserved_mem.h>
+ #include "ion.h"
+ 
+ #define ION_CARVEOUT_ALLOCATE_FAIL	-1
+ 
++struct rmem_carveout {
++	phys_addr_t base;
++	phys_addr_t size;
++};
++static struct rmem_carveout carveout_data;
++
+ struct ion_carveout_heap {
+ 	struct ion_heap heap;
+ 	struct gen_pool *pool;
+@@ -112,7 +121,7 @@ static struct ion_heap_ops carveout_heap_ops = {
+ 	.unmap_kernel = ion_heap_unmap_kernel,
+ };
+ 
+-struct ion_heap *ion_carveout_heap_create(struct ion_platform_heap *heap_data)
++struct ion_heap *ion_carveout_heap_create(struct rmem_carveout *heap_data)
+ {
+ 	struct ion_carveout_heap *carveout_heap;
+ 	int ret;
+@@ -145,3 +154,52 @@ struct ion_heap *ion_carveout_heap_create(struct ion_platform_heap *heap_data)
+ 
+ 	return &carveout_heap->heap;
+ }
++
++static int ion_add_carveout_heap(void)
++{
++	struct ion_heap *heap;
++
++	if (carveout_data.base == 0 || carveout_data.size == 0)
++		return -EINVAL;
++
++	heap = ion_carveout_heap_create(&carveout_data);
++	if (IS_ERR(heap))
++		return PTR_ERR(heap);
++
++	heap->name = "carveout";
++
++	ion_device_add_heap(heap);
++	return 0;
++}
++
++static int rmem_carveout_device_init(struct reserved_mem *rmem,
++					 struct device *dev)
++{
++	dev_set_drvdata(dev, rmem);
++	return 0;
++}
++
++static void rmem_carveout_device_release(struct reserved_mem *rmem,
++					 struct device *dev)
++{
++	dev_set_drvdata(dev, NULL);
++}
++
++static const struct reserved_mem_ops rmem_dma_ops = {
++	.device_init    = rmem_carveout_device_init,
++	.device_release = rmem_carveout_device_release,
++};
++
++static int __init rmem_carveout_setup(struct reserved_mem *rmem)
++{
++	carveout_data.base = rmem->base;
++	carveout_data.size = rmem->size;
++	rmem->ops = &rmem_dma_ops;
++	pr_info("Reserved memory: ION carveout pool at %pa, size %ld MiB\n",
++			&rmem->base, (unsigned long)rmem->size / SZ_1M);
++	return 0;
++}
++
++RESERVEDMEM_OF_DECLARE(carveout, "imx-ion-pool", rmem_carveout_setup);
++
++device_initcall(ion_add_carveout_heap);
+-- 
+2.7.4
+

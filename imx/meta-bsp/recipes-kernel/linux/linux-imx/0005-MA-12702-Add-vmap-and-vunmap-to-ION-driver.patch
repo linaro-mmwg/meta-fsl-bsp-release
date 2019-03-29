@@ -1,0 +1,52 @@
+From ff1f9803f0b77bdfb170699e257a75e62f762144 Mon Sep 17 00:00:00 2001
+From: "ivan.liu" <xiaowen.liu@nxp.com>
+Date: Thu, 13 Sep 2018 14:52:20 +0800
+Subject: [PATCH 05/19] MA-12702 Add vmap and vunmap to ION driver.
+
+USB camera will call vmap and vunmap when use DMABUF mode.
+Add these two api to make USB camera can work.
+
+Change-Id: Ib9849faccfd55318c582b4915f439df3a4e7f06d
+Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
+---
+ drivers/staging/android/ion/ion.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
+index 24cb666..1e9224aa 100644
+--- a/drivers/staging/android/ion/ion.c
++++ b/drivers/staging/android/ion/ion.c
+@@ -380,6 +380,21 @@ static int ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf,
+ 	return 0;
+ }
+ 
++static void *ion_dma_buf_vmap(struct dma_buf *dmabuf)
++{
++	struct ion_buffer *buffer = dmabuf->priv;
++
++	if (ion_dma_buf_begin_cpu_access(dmabuf, DMA_NONE) != 0)
++		return NULL;
++
++	return buffer->vaddr;
++}
++
++static void ion_dma_buf_vunmap(struct dma_buf *dmabuf, void *vaddr)
++{
++	ion_dma_buf_end_cpu_access(dmabuf, DMA_NONE);
++}
++
+ static const struct dma_buf_ops dma_buf_ops = {
+ 	.map_dma_buf = ion_map_dma_buf,
+ 	.unmap_dma_buf = ion_unmap_dma_buf,
+@@ -393,6 +408,8 @@ static const struct dma_buf_ops dma_buf_ops = {
+ 	.unmap_atomic = ion_dma_buf_kunmap,
+ 	.map = ion_dma_buf_kmap,
+ 	.unmap = ion_dma_buf_kunmap,
++	.vmap = ion_dma_buf_vmap,
++	.vunmap = ion_dma_buf_vunmap,
+ };
+ 
+ int ion_alloc(size_t len, unsigned int heap_id_mask, unsigned int flags)
+-- 
+2.7.4
+

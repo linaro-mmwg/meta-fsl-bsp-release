@@ -1,0 +1,29 @@
+From 06a3d67daa17eefc165a0287ad466294a6d7d2f5 Mon Sep 17 00:00:00 2001
+From: "ivan.liu" <xiaowen.liu@nxp.com>
+Date: Fri, 29 Mar 2019 11:02:04 -0400
+Subject: [PATCH 03/19] MA-12602-3 Add ION carveout heap support on 4.14
+ kernel.
+
+Add ION carveout heap to defconfig.
+
+Change-Id: Ic19802f111011395646ee6abebdf60f375c1960e
+Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 211e517..95a1904 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -674,6 +674,7 @@ CONFIG_STAGING=y
+ CONFIG_ION=y
+ CONFIG_ION_SYSTEM_HEAP=y
+ CONFIG_ION_CMA_HEAP=y
++CONFIG_ION_CARVEOUT_HEAP=y
+ CONFIG_TYPEC_TCPM=y
+ CONFIG_TYPEC_TCPCI=y
+ CONFIG_COMMON_CLK_RK808=y
+-- 
+2.7.4
+

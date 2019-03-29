@@ -1,7 +1,7 @@
-From 7f30a0b914eb3fa4f392e5d8dfb5d87f13588107 Mon Sep 17 00:00:00 2001
+From 3a31fd933427d6772d3971b9528029c90ed722e4 Mon Sep 17 00:00:00 2001
 From: Jerome Forissier <jerome.forissier@linaro.org>
 Date: Fri, 31 Aug 2018 11:53:16 +0100
-Subject: [PATCH 05/13] staging: android: ion: do not clear dma_address of
+Subject: [PATCH 10/19] staging: android: ion: do not clear dma_address of
  unmapped heap
 
 Since commit 54ef5b9db767 (staging: android: ion: Initialize dma_address
@@ -20,7 +20,7 @@ Signed-off-by: Jerome Forissier <jerome.forissier@linaro.org>
  1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
-index bebfcbe..ed55d6e 100644
+index 31b2e51..f93aeba 100644
 --- a/drivers/staging/android/ion/ion.c
 +++ b/drivers/staging/android/ion/ion.c
 @@ -183,7 +183,8 @@ static void ion_buffer_kmap_put(struct ion_buffer *buffer)

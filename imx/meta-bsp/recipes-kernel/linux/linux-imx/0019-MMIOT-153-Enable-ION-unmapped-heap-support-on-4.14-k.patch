@@ -1,0 +1,26 @@
+From d877ea99f726a393cd5052f68b84287bf81bf234 Mon Sep 17 00:00:00 2001
+From: Alexandre Jutras <alexandre.jutras@nxp.com>
+Date: Fri, 29 Mar 2019 11:17:41 -0400
+Subject: [PATCH 19/19] MMIOT-153: Enable ION unmapped heap support on 4.14
+ kernel
+
+Signed-off-by: Alexandre Jutras <alexandre.jutras@nxp.com>
+---
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 95a1904..ce695a4 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -675,6 +675,7 @@ CONFIG_ION=y
+ CONFIG_ION_SYSTEM_HEAP=y
+ CONFIG_ION_CMA_HEAP=y
+ CONFIG_ION_CARVEOUT_HEAP=y
++CONFIG_ION_UNMAPPED_HEAP=y
+ CONFIG_TYPEC_TCPM=y
+ CONFIG_TYPEC_TCPCI=y
+ CONFIG_COMMON_CLK_RK808=y
+-- 
+2.7.4
+

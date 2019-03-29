@@ -1,7 +1,7 @@
-From 091fb5e3bf010b4c236f1a44c1e3f456e79b920a Mon Sep 17 00:00:00 2001
+From ad9f70e0db87dfbbd732fd5e943617dd40ec3a18 Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Tue, 18 Sep 2018 16:27:47 +0200
-Subject: [PATCH 07/13] MMIOT-157: Ion unmapped: reservedmem instantiantion
+Subject: [PATCH 12/19] MMIOT-157: Ion unmapped: reservedmem instantiantion
 
 Change-Id: I09ade28f40c549b383dcc6dfc001e239b676c54b
 Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
