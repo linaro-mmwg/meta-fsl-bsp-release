@@ -1,7 +1,7 @@
-From 06a3d67daa17eefc165a0287ad466294a6d7d2f5 Mon Sep 17 00:00:00 2001
+From d8e0b819769fd360d3c7b44f58a7a0a55800fdc3 Mon Sep 17 00:00:00 2001
 From: "ivan.liu" <xiaowen.liu@nxp.com>
 Date: Fri, 29 Mar 2019 11:02:04 -0400
-Subject: [PATCH 03/19] MA-12602-3 Add ION carveout heap support on 4.14
+Subject: [PATCH 05/21] MA-12602-3 Add ION carveout heap support on 4.14
  kernel.
 
 Add ION carveout heap to defconfig.

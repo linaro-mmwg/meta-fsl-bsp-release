@@ -1,7 +1,7 @@
-From 922bf76934fcf287a14c07c75832a43da4f212d0 Mon Sep 17 00:00:00 2001
+From b61133c8dda99bab180491a949095230f5a61422 Mon Sep 17 00:00:00 2001
 From: "ivan.liu" <xiaowen.liu@nxp.com>
 Date: Tue, 3 Jul 2018 17:16:08 +0800
-Subject: [PATCH 04/19] MA-12122 Enlarge ION carveout memory address alignment
+Subject: [PATCH 06/21] MA-12122 Enlarge ION carveout memory address alignment
  to 64K.
 
 Enlarge pool minimal allocation alignment to 64K for ION carveout heap.

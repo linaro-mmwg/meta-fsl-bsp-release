@@ -1,7 +1,7 @@
-From 2feb17013b5e8777fef8348c60e385f6c0ffeba6 Mon Sep 17 00:00:00 2001
+From 7d36ad8cf000f723fc9810dbc4ebd08765498036 Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Thu, 20 Sep 2018 15:32:42 +0200
-Subject: [PATCH 13/19] MMIOT-157: Ion: support multiple unmapped ion heap
+Subject: [PATCH 15/21] MMIOT-157: Ion: support multiple unmapped ion heap
 
 Change-Id: I268fd5d2bf039699ecdcab752146bc191209f046
 Signed-off-by: Olivier Masse <olivier.masse@nxp.com>

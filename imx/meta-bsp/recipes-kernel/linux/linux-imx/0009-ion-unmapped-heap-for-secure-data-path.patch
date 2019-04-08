@@ -1,7 +1,7 @@
-From 5ca8f2b91aa7863fbc09b2887298c5f8703a9fa8 Mon Sep 17 00:00:00 2001
+From 02e3a2d8e244f8d56df925c4a3792b6a81da0172 Mon Sep 17 00:00:00 2001
 From: Etienne Carriere <etienne.carriere@linaro.org>
 Date: Mon, 14 Aug 2017 17:16:39 +0200
-Subject: [PATCH 07/19] ion: "unmapped" heap for secure data path
+Subject: [PATCH 09/21] ion: "unmapped" heap for secure data path
 
 OP-TEE/SDP (Secure Data Path) memory pools are created through ION
 secure type heap" from Allwinner. This change renames "secure" into

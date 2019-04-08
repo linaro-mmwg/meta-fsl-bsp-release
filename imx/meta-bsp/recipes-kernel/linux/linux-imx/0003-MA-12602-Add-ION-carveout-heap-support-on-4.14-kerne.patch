@@ -1,7 +1,7 @@
-From 34bba5a128ee861690b50a48591c59d4c4cb6d85 Mon Sep 17 00:00:00 2001
+From 3966deb0a7f52375a94c98185ec86bf5c7db4a0a Mon Sep 17 00:00:00 2001
 From: "ivan.liu" <xiaowen.liu@nxp.com>
 Date: Thu, 30 Aug 2018 14:09:38 +0800
-Subject: [PATCH 01/19] MA-12602 Add ION carveout heap support on 4.14 kernel.
+Subject: [PATCH 03/21] MA-12602 Add ION carveout heap support on 4.14 kernel.
 
 Declare imx-ion-pool reserved memory.
 Setup ION carveout heap with this reserved memory.

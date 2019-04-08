@@ -1,7 +1,7 @@
-From d877ea99f726a393cd5052f68b84287bf81bf234 Mon Sep 17 00:00:00 2001
+From 16c75840aa9fd6fab10d930816a698c1ad1651f0 Mon Sep 17 00:00:00 2001
 From: Alexandre Jutras <alexandre.jutras@nxp.com>
 Date: Fri, 29 Mar 2019 11:17:41 -0400
-Subject: [PATCH 19/19] MMIOT-153: Enable ION unmapped heap support on 4.14
+Subject: [PATCH 21/21] MMIOT-153: Enable ION unmapped heap support on 4.14
  kernel
 
 Signed-off-by: Alexandre Jutras <alexandre.jutras@nxp.com>

@@ -1,7 +1,7 @@
-From ff1f9803f0b77bdfb170699e257a75e62f762144 Mon Sep 17 00:00:00 2001
+From 5dabc6b0a39f370eb8a3673ffa0833dd00d253dc Mon Sep 17 00:00:00 2001
 From: "ivan.liu" <xiaowen.liu@nxp.com>
 Date: Thu, 13 Sep 2018 14:52:20 +0800
-Subject: [PATCH 05/19] MA-12702 Add vmap and vunmap to ION driver.
+Subject: [PATCH 07/21] MA-12702 Add vmap and vunmap to ION driver.
 
 USB camera will call vmap and vunmap when use DMABUF mode.
 Add these two api to make USB camera can work.
@@ -13,7 +13,7 @@ Signed-off-by: ivan.liu <xiaowen.liu@nxp.com>
  1 file changed, 17 insertions(+)
 
 diff --git a/drivers/staging/android/ion/ion.c b/drivers/staging/android/ion/ion.c
-index 24cb666..1e9224aa 100644
+index dd96ca6..854faa2 100644
 --- a/drivers/staging/android/ion/ion.c
 +++ b/drivers/staging/android/ion/ion.c
 @@ -380,6 +380,21 @@ static int ion_dma_buf_end_cpu_access(struct dma_buf *dmabuf,

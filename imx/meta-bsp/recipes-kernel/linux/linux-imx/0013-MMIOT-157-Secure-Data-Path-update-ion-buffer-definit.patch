@@ -1,7 +1,7 @@
-From 74b8cbb65c0366ba2783ac2650aedfae6d97b05c Mon Sep 17 00:00:00 2001
+From 28b0508c3a6d1b2ff7f08afb597479856f0ad28c Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Tue, 18 Sep 2018 16:04:58 +0200
-Subject: [PATCH 11/19] MMIOT-157: Secure Data Path: update ion buffer
+Subject: [PATCH 13/21] MMIOT-157: Secure Data Path: update ion buffer
  definition
 
 Change-Id: I55f88e103a987bc8adaf2634026031d1fbc1e0b9

@@ -1,7 +1,7 @@
-From f1b674f9d74c69b8c27784222c1e96061b1a8061 Mon Sep 17 00:00:00 2001
+From c445386c52c615f412a3f5604f5b98b48294639d Mon Sep 17 00:00:00 2001
 From: Olivier Masse <olivier.masse@nxp.com>
 Date: Tue, 25 Sep 2018 15:58:07 +0200
-Subject: [PATCH 14/19] MMIOT-152 imx8mm drm device tree
+Subject: [PATCH 16/21] MMIOT-152 imx8mm drm device tree
 
 Change-Id: Ic43bc3086562edc513f125605d416fe928c12135
 Signed-off-by: Olivier Masse <olivier.masse@nxp.com>
