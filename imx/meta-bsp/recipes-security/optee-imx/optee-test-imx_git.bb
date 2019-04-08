@@ -9,9 +9,12 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=daa2bcccc666345ab8940aab1315a4fa"
 inherit pythonnative
 DEPENDS = "optee-os-imx optee-client-imx python-pycrypto-native openssl"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+
 SRCBRANCH = "imx_4.14.78_1.0.0_ga"
 OPTEE_TEST_SRC ?= "git://source.codeaurora.org/external/imx/imx-optee-test.git;protocol=https"
-SRC_URI = "${OPTEE_TEST_SRC};branch=${SRCBRANCH}"
+SRC_URI = "${OPTEE_TEST_SRC};branch=${SRCBRANCH} \
+           file://0001-sdp-basic-Select-heap-using-ID.patch"
 SRCREV = "eb7f698da9a7fa1587f96aa92ad8668abb0f0f48" 
 
 S = "${WORKDIR}/git"
