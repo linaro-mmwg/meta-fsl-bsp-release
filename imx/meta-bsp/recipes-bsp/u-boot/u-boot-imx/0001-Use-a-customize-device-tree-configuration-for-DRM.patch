@@ -1,0 +1,26 @@
+From 0d62193715707e8e0a0222eeecd64cd8c0ab5cdc Mon Sep 17 00:00:00 2001
+From: Alexandre Jutras <alexandre.jutras@linaro.org>
+Date: Fri, 25 May 2018 13:31:00 -0400
+Subject: [PATCH] Use a customize device tree configuration for DRM
+
+Signed-off-by: Alexandre Jutras <alexandre.jutras@linaro.org>
+---
+ include/configs/imx8mq_evk.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/imx8mq_evk.h b/include/configs/imx8mq_evk.h
+index 315df99..1edff6c 100644
+--- a/include/configs/imx8mq_evk.h
++++ b/include/configs/imx8mq_evk.h
+@@ -119,7 +119,7 @@
+ 	"fdt_addr=0x43000000\0"			\
+ 	"fdt_high=0xffffffffffffffff\0"		\
+ 	"boot_fdt=try\0" \
+-	"fdt_file=fsl-imx8mq-evk.dtb\0" \
++	"fdt_file=fsl-imx8mq-evk-drm.dtb\0" \
+ 	"initrd_addr=0x43800000\0"		\
+ 	"initrd_high=0xffffffffffffffff\0" \
+ 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
+-- 
+2.7.4
+

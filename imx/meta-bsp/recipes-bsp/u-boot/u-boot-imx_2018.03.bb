@@ -16,6 +16,8 @@ SRCBRANCH = "imx_v2018.03_4.14.78_1.0.0_ga"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 SRCREV = "7ade5b407fe6164c0d07f32f72e487ae5f6f3964"
 
+SRC_URI += "file://0001-Use-a-customize-device-tree-configuration-for-DRM.patch"
+
 S = "${WORKDIR}/git"
 
 inherit fsl-u-boot-localversion
