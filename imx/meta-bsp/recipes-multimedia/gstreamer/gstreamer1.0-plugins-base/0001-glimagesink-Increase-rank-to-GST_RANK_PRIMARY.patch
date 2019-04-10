@@ -1,0 +1,28 @@
+From 2c0b37fd9ae4dfcb526fc5b2c3dec9d393f86d30 Mon Sep 17 00:00:00 2001
+From: Alexandre Jutras <alexandre.jutras@nxp.com>
+Date: Tue, 26 Mar 2019 14:30:05 -0400
+Subject: [PATCH] glimagesink: Increase rank to GST_RANK_PRIMARY
+
+Signed-off-by: Alexandre Jutras <alexandre.jutras@nxp.com>
+---
+ ext/gl/gstopengl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/ext/gl/gstopengl.c b/ext/gl/gstopengl.c
+index fc67298..4253970 100644
+--- a/ext/gl/gstopengl.c
++++ b/ext/gl/gstopengl.c
+@@ -123,8 +123,9 @@ plugin_init (GstPlugin * plugin)
+     XInitThreads ();
+ #endif
+ 
++  GST_INFO("[AJ] Set glimagesink rank to GST_RANK_PRIMARY\n");
+   if (!gst_element_register (plugin, "glimagesink",
+-          GST_RANK_SECONDARY, gst_gl_image_sink_bin_get_type ())) {
++          GST_RANK_PRIMARY, gst_gl_image_sink_bin_get_type ())) {
+     return FALSE;
+   }
+ 
+-- 
+2.7.4
+

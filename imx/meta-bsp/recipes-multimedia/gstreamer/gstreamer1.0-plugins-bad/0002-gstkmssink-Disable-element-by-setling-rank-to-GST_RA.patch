@@ -1,0 +1,36 @@
+From 0504e7b80c57f5f25fb7a2df111b5394582118a3 Mon Sep 17 00:00:00 2001
+From: Alexandre Jutras <alexandre.jutras@nxp.com>
+Date: Tue, 26 Mar 2019 14:40:23 -0400
+Subject: [PATCH 2/2] gstkmssink: Disable element by setling rank to
+ GST_RANK_NONE
+
+Signed-off-by: Alexandre Jutras <alexandre.jutras@nxp.com>
+---
+ sys/kms/gstkmssink.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/sys/kms/gstkmssink.c b/sys/kms/gstkmssink.c
+index 29b4167..d67e893 100644
+--- a/sys/kms/gstkmssink.c
++++ b/sys/kms/gstkmssink.c
+@@ -2400,12 +2400,17 @@ plugin_init (GstPlugin * plugin)
+ {
+   GstRank rank = GST_RANK_SECONDARY;
+ 
++#if 0
+   if (HAS_DPU()) {
+     if (HAS_VPU())
+       rank = IMX_GST_PLUGIN_RANK;
+   } else if (HAS_DCSS()) {
+     rank = IMX_GST_PLUGIN_RANK;
+   }
++#else
++  GST_INFO("[AJ] Disable kmssink (set rank to GST_RANK_NONE)\n");
++  rank = GST_RANK_NONE;
++#endif
+ 
+   if (!gst_element_register (plugin, GST_PLUGIN_NAME, rank,
+           GST_TYPE_KMS_SINK))
+-- 
+2.7.4
+

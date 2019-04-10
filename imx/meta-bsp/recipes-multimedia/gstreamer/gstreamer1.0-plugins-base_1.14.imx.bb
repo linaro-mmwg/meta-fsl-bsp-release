@@ -33,6 +33,7 @@ SRC_URI = " \
     ${GST1.0-PLUGINS-BASE_SRC};branch=${SRCBRANCH} \
     file://0001-introspection.m4-prefix-pkgconfig-paths-with-PKG_CON.patch \
     file://make-gio_unix_2_0-dependency-configurable.patch \
+    file://0001-glimagesink-Increase-rank-to-GST_RANK_PRIMARY.patch \
 "
 SRCREV = "318a9477159d6b162e480faf29f56153b27fb6a7" 
 

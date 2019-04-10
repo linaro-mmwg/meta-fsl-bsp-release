@@ -45,6 +45,8 @@ SRCBRANCH = "MM_04.04.04_1811_L4.14.78_GA"
 SRC_URI = " \
     ${GST1.0-PLUGINS-BAD_SRC};branch=${SRCBRANCH} \
     file://0001-opencv-Fix-build-for-opencv-3.4.2.patch \
+    file://0001-gstwaylandsink-Disable-element-by-setling-rank-to-GS.patch \
+    file://0002-gstkmssink-Disable-element-by-setling-rank-to-GST_RA.patch \
 "
 
 SRCREV = "7e8a87fcbf5bd44b6982f6d15f2d28aa5f49a6be" 
