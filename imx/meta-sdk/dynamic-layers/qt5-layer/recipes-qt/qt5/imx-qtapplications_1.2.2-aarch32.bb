@@ -4,7 +4,7 @@
 
 DESCRIPTION = "Freescale QT Multimedia applications"
 LICENSE = "Proprietary"
-LIC_FILES_CHKSUM = "file://COPYING;md5=fb0303e4ee8b0e71c094171e2272bd44"
+LIC_FILES_CHKSUM = "file://COPYING;md5=5ab1a30d0cd181e3408077727ea5a2db"
 
 inherit fsl-eula-unpack pkgconfig
 
