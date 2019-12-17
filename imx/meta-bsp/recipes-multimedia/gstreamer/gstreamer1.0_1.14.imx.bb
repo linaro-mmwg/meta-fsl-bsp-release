@@ -20,6 +20,10 @@ DEPENDS += " elfutils"
 # Unrecognised options, need to remove them
 EXTRA_OECONF_remove = " --disable-docbook --disable-trace"
 
+# Enable GStreamer log
+EXTRA_OECONF_append = " --enable-gst-debug=yes"
+EXTRA_OECONF_append = " --enable-debug=yes"
+
 PV = "1.14.4.imx"
 
 S = "${WORKDIR}/git"
