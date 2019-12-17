@@ -177,6 +177,9 @@ if [ -d ../sources/meta-freescale ]; then
     sed -e "s,\$.BSPDIR./sources/meta-fsl-arm-extra\s,,g" -i conf/bblayers.conf
 fi
 
+source ../enable-wpe.sh
+source ../enable-drm.sh
+
 cd  $BUILD_DIR
 clean_up
 unset FSLDISTRO
