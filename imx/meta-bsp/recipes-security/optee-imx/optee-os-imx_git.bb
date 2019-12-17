@@ -44,6 +44,15 @@ EXTRA_OEMAKE = "PLATFORM=imx PLATFORM_FLAVOR=${PLATFORM_FLAVOR} \
 		O=${B} \
         "
 
+EXTRA_OEMAKE_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'sdp', \
+               'CFG_SECURE_DATA_PATH=y \
+                CFG_TEE_SDP_MEM_BASE=0xCC000000 \
+                CFG_TEE_SDP_MEM_SIZE=0x02000000 \
+                CFG_TEE_SDP_NONCACHE=y \
+                CFG_DRM_SECURE_DATA_PATH=y \
+                CFG_RDC_SECURE_DATA_PATH=y \
+                CFG_RDC_DECODED_BUFFER=0xCE000000', '', d)}"
+
 do_compile () {
     unset LDFLAGS
     export CFLAGS="${CFLAGS} --sysroot=${STAGING_DIR_HOST}"
