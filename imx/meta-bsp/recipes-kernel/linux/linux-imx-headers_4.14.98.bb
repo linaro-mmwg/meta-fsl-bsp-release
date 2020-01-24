@@ -22,6 +22,7 @@ IMX_UAPI_HEADERS = " \
     hantrodec.h \
     hx280enc.h \
     ion.h \
+    secure_ion.h \
     ipu.h \
     isl29023.h \
     mxc_asrc.h \
@@ -43,6 +44,7 @@ do_install() {
 
     # FIXME: The ion.h is still on staging so "promote" it for now
     cp ${S}/drivers/staging/android/uapi/ion.h ${B}${includedir}/linux
+    cp ${S}/drivers/staging/android/uapi/secure_ion.h ${B}${includedir}/linux
 
     # Install whitelisted headers only
     for h in ${IMX_UAPI_HEADERS}; do
