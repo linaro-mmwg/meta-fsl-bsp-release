@@ -1,18 +1,18 @@
-# Copyright (C) 2017-2018 NXP
+# Copyright (C) 2017-2020 NXP
 
 SUMMARY = "OPTEE OS"
 DESCRIPTION = "OPTEE OS"
 HOMEPAGE = "http://www.optee.org/"
 LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=69663ab153298557a59c67a60a743e5b"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=c1f21c4f72f372ef38a5a4aee55ec173"
 
 inherit deploy pythonnative autotools
 DEPENDS = "python-pycrypto-native u-boot-mkimage-native"
 
-SRCBRANCH = "imx_4.14.98_2.1.0"
-OPTEE_OS_SRC ?= "git://source.codeaurora.org/external/imx/imx-optee-os.git;protocol=https"
+SRCBRANCH = "imx_3.7.y_drm"
+OPTEE_OS_SRC ?= "git://bitbucket.sw.nxp.com/mss/imx-optee-os.git;protocol=ssh"
 SRC_URI = "${OPTEE_OS_SRC};branch=${SRCBRANCH}"
-SRCREV = "37f4865cd3a4d22cbebeb7d8fe83449d77dd5c7f" 
+SRCREV = "8d280d18f0d5b3a9b1493de698865b025649f80d"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build.${PLATFORM_FLAVOR}"
@@ -56,6 +56,8 @@ EXTRA_OEMAKE_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'sdp', \
 do_compile () {
     unset LDFLAGS
     export CFLAGS="${CFLAGS} --sysroot=${STAGING_DIR_HOST}"
+    export CFG_RPMB_FS="y"
+    #export CFG_RPMB_WRITE_KEY="y"
     oe_runmake -C ${S} all CFG_TEE_TA_LOG_LEVEL=0
 }
 

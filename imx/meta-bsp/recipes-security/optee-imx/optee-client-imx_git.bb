@@ -1,4 +1,4 @@
-# Copyright (C) 2017-2018 NXP
+# Copyright (C) 2017-2020 NXP
 
 SUMMARY = "OPTEE Client libs"
 HOMEPAGE = "http://www.optee.org/"
@@ -7,10 +7,10 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=69663ab153298557a59c67a60a743e5b"
 
 inherit pythonnative systemd
 
-SRCBRANCH = "imx_4.14.98_2.1.0"
-OPTEE_CLIENT_SRC ?= "git://source.codeaurora.org/external/imx/imx-optee-client.git;protocol=https"
+SRCBRANCH = "imx_3.7.y_drm"
+OPTEE_CLIENT_SRC ?= "git://git@bitbucket.sw.nxp.com/mss/imx-optee-client.git;protocol=ssh"
 SRC_URI = "${OPTEE_CLIENT_SRC};branch=${SRCBRANCH}"
-SRCREV = "71a9bef78fff2d5d4db8a2307d3b91e2aa671dc9" 
+SRCREV = "210075527eb28173904762d64fca0cc819441ca9"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 SRC_URI_append = " file://tee-supplicant.service"
@@ -31,13 +31,13 @@ do_compile () {
 do_install () {
 	oe_runmake install
 
-	install -D -p -m0644 ${S}/out/export/lib/libteec.so.1.0 ${D}${libdir}/libteec.so.1.0
+	install -D -p -m0644 ${S}/out/libteec/libteec.so.1.0 ${D}${libdir}/libteec.so.1.0
 	ln -sf libteec.so.1.0 ${D}${libdir}/libteec.so
 	ln -sf libteec.so.1.0 ${D}${libdir}/libteec.so.1
 
-	install -D -p -m0755 ${S}/out/export/bin/tee-supplicant ${D}${bindir}/tee-supplicant
+	install -D -p -m0755 ${S}/out/export/usr/sbin/tee-supplicant ${D}${bindir}/tee-supplicant
 
-	cp -a ${S}/out/export/include ${D}/usr/
+	cp -a ${S}/out/export/usr/include ${D}/usr/
 
 	sed -i -e s:/etc:${sysconfdir}:g -e s:/usr/bin:${bindir}:g ${WORKDIR}/tee-supplicant.service
 	install -D -p -m0644 ${WORKDIR}/tee-supplicant.service ${D}${systemd_system_unitdir}/tee-supplicant.service
