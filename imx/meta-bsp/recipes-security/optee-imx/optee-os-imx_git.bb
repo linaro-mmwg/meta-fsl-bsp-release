@@ -12,7 +12,7 @@ DEPENDS = "python-pycrypto-native u-boot-mkimage-native"
 SRCBRANCH = "imx_3.7.y_drm"
 OPTEE_OS_SRC ?= "git://bitbucket.sw.nxp.com/mss/imx-optee-os.git;protocol=ssh"
 SRC_URI = "${OPTEE_OS_SRC};branch=${SRCBRANCH}"
-SRCREV = "8d280d18f0d5b3a9b1493de698865b025649f80d"
+SRCREV = "40506e5063859aa0a9cc299d9a17ee3cc0bee33a"
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/build.${PLATFORM_FLAVOR}"
@@ -58,7 +58,10 @@ do_compile () {
     export CFLAGS="${CFLAGS} --sysroot=${STAGING_DIR_HOST}"
     export CFG_RPMB_FS="y"
     #export CFG_RPMB_WRITE_KEY="y"
+    #export CFG_RPMB_RESET_FAT="y"
+    export CFG_CORE_HEAP_SIZE="131072"
     oe_runmake -C ${S} all CFG_TEE_TA_LOG_LEVEL=0
+#    oe_runmake -C ${S} all CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 DEBUG=1
 }
 
 
