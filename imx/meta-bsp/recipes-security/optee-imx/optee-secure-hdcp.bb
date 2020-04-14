@@ -32,6 +32,7 @@ do_compile () {
     export CROSS_COMPILE_TA=${HOST_PREFIX}
     export CROSS_COMPILE=${HOST_PREFIX}
     export OPTEE_OPENSSL_EXPORT=${STAGING_INCDIR}/
+    export TEEC_EXPORT="${STAGING_DIR_HOST}/usr"
     oe_runmake V=1
 }
 
