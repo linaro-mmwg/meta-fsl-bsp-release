@@ -16,10 +16,11 @@ SRCURL ?= "git://bitbucket.sw.nxp.com/mmiot/provisioning.git;protocol=ssh"
 SRC_URI = "${SRCURL};branch=${SRCBRANCH}"
 SRCREV = "${AUTOREV}"
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 S = "${WORKDIR}/git"
 
 do_compile () {
-    unset LDFLAGS
     if [ ${DEFAULTTUNE} = "aarch64" ];then
         export TA_DEV_KIT_DIR=${STAGING_INCDIR}/optee/export-user_ta_arm64/
         export ARCH=arm64
@@ -27,6 +28,7 @@ do_compile () {
         export TA_DEV_KIT_DIR=${STAGING_INCDIR}/optee/export-user_ta_arm32/
         export ARCH=arm
     fi
+    export CFG_ANDROID_WIDEVINE="true"
     export OPTEE_CLIENT_EXPORT=${STAGING_DIR_HOST}/usr
     export CROSS_COMPILE_HOST=${HOST_PREFIX}
     export CROSS_COMPILE_TA=${HOST_PREFIX}
@@ -41,7 +43,13 @@ do_install () {
     echo "INSTALL provisioning TA from ${WORKDIR}" 
     find ${S}/ta -name '*.ta' | while read name; do
     install -m 444 $name ${D}/lib/optee_armtz/
+
+    echo "INSTALL user space provisioning application from ${WORKDIR}"
+    install -d ${D}${bindir}
+    install -m 0755 ${S}/host/optee-provisioning-imx ${D}${bindir}/
+
     done
 }
 
-FILES_${PN} = "/lib*/optee_armtz/"
+#FILES_SOLIBSDEV = ""
+FILES_${PN} = "/lib*/optee_armtz/ ${bindir}/optee-provisioning-imx"
