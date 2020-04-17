@@ -42,6 +42,10 @@ do_install () {
     find ${S}/ta -name '*.ta' | while read name; do
     install -m 444 $name ${D}/lib/optee_armtz/
     done
+    echo "INSTALL user space hdcp control application from ${WORKDIR}"
+    install -d ${D}${bindir}
+    install -m 0755 ${S}/host/optee-secure-hdcp ${D}${bindir}/
 }
 
-FILES_${PN} = "/lib*/optee_armtz/"
+FILES_${PN} = "/lib*/optee_armtz/ ${bindir}/optee-secure-hdcp"
+
