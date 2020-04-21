@@ -16,10 +16,11 @@ SRCURL ?= "git://bitbucket.sw.nxp.com/mmiot/optee-secure-hdcp-control.git;protoc
 SRC_URI = "${SRCURL};branch=${SRCBRANCH}"
 SRCREV = "${AUTOREV}"
 
+TARGET_CC_ARCH += "${LDFLAGS}"
+
 S = "${WORKDIR}/git"
 
 do_compile () {
-    unset LDFLAGS
     if [ ${DEFAULTTUNE} = "aarch64" ];then
         export TA_DEV_KIT_DIR=${STAGING_INCDIR}/optee/export-user_ta_arm64/
         export ARCH=arm64
