@@ -52,7 +52,9 @@ EXTRA_OEMAKE_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'sdp', \
                 CFG_TEE_SDP_NONCACHE=y \
                 CFG_DRM_SECURE_DATA_PATH=y \
                 CFG_RDC_SECURE_DATA_PATH=y \
-                CFG_RDC_DECODED_BUFFER=0xCE000000', '', d)}"
+                CFG_RDC_DECODED_BUFFER_BASE=0xCE000000 \
+                CFG_RDC_DECODED_BUFFER_SIZE=0x30000000 \
+                CFG_HANTRO_VPU_PTA=y', '', d)}"
 
 do_compile () {
     unset LDFLAGS
