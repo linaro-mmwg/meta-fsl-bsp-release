@@ -34,7 +34,8 @@ EXTRA_OEMAKE_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'sdp', \
                          'DECRYPTED_BUFFER_START=0xCC000000 \
                           DECRYPTED_BUFFER_LEN=0x02000000 \
                           DECODED_BUFFER_START=0xCE000000 \
-                          DECODED_BUFFER_LEN=0x30000000', '', d)}"
+                          DECODED_BUFFER_LEN=0x30000000 \
+                          CFG_SECURE_HANTRO_VPU=y', '', d)}"
 
 do_compile () {
     export CROSS_COMPILE="${TARGET_PREFIX}"
