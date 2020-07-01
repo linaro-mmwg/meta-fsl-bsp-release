@@ -63,6 +63,7 @@ do_compile () {
     #export CFG_RPMB_WRITE_KEY="y"
     #export CFG_RPMB_RESET_FAT="y"
     export CFG_CORE_HEAP_SIZE="131072"
+    export CFG_RPMB_DISABLE_HASH_DB="y"
     oe_runmake -C ${S} all CFG_TEE_TA_LOG_LEVEL=0
 #    oe_runmake -C ${S} all CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 DEBUG=1
 }
