@@ -1,9 +1,8 @@
 # Copyright (C) 2013-2016 Freescale Semiconductor
-# Copyright 2017-2019 NXP
+# Copyright 2017-2018 NXP
 
 DESCRIPTION = "i.MX U-Boot suppporting i.MX reference boards."
-require u-boot-common.inc
-require u-boot.inc
+require recipes-bsp/u-boot/u-boot.inc
 inherit pythonnative
 
 PROVIDES += "u-boot"
@@ -13,10 +12,10 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 UBOOT_SRC ?= "git://source.codeaurora.org/external/imx/uboot-imx.git;protocol=https"
-SRCBRANCH = "imx_v2019.04_4.19.35_1.0.0"
+SRCBRANCH = "imx_v2018.03_4.14.98_2.1.0"
 SRC_URI = "${UBOOT_SRC};branch=${SRCBRANCH}"
 #DRM_PATCH
-SRCREV = "85bdcc798163f72a7dfd723af4f0ef35d526ae09"
+SRCREV = "b9dc0acc7a29fc56012c7c2ebfff36a7ff3320ab"
 
 S = "${WORKDIR}/git"
 
